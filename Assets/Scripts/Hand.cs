@@ -5,7 +5,7 @@ using UnityEngine;
 public class Hand : MonoBehaviour
 {
     [System.Serializable]
-    public class HandStruct
+    public class HandClass
     {
         [SerializeField] private Card InternalCard;
         [SerializeField] private GameObject VisualCard;
@@ -26,7 +26,7 @@ public class Hand : MonoBehaviour
         {
             return VisualCard;
         }
-        public HandStruct(Card c, GameObject v, bool s)
+        public HandClass(Card c, GameObject v, bool s)
         {
             InternalCard = c;
             VisualCard = v;
@@ -34,12 +34,12 @@ public class Hand : MonoBehaviour
             VisualCard.GetComponent<PlayCard>().Set_card(this);
         }
     }
-    [SerializeField] private List<HandStruct> HandDeck = new List<HandStruct>();
+    [SerializeField] private List<HandClass> HandDeck = new List<HandClass>();
     [SerializeField] private int HandStartSize = 5;
     
     public void Set_Hand(Card card, GameObject visual)
     {
-        HandDeck.Add(new HandStruct(card, visual,false));
+        HandDeck.Add(new HandClass(card, visual,false));
     }
     public int Get_HandMaxSize()
     {
@@ -51,28 +51,29 @@ public class Hand : MonoBehaviour
     }
     public void SendHandBackToDeck()
     {
-        foreach(HandStruct card in HandDeck)
+        foreach(HandClass card in HandDeck)
         {
             DeckAdministrator.instance.FillDeck(card.Get_InternalCard());
             Destroy(card.Get_VisualCard());
         }
         HandDeck.Clear();
     }
-    public void RemoveCard(HandStruct card)
+    public void RemoveCard(HandClass card)
     {
+        // find the card position on hand
         int i = 0;
         while (HandDeck[i].Get_VisualCard() != card.Get_VisualCard() && i < HandDeck.Count)
         {
             i++;
         }
         HandDeck.RemoveAt(i);
+        // move the other cards on hand to fill the blank space left
         while (i < HandDeck.Count)
         {
             HandDeck[i].Get_VisualCard().transform.position -= new Vector3(3.75f, 0, 0);
             i++;
         }
-        GameObject vc = card.Get_VisualCard();
-        Destroy(vc);
-        
+        // destroy card onscreen;
+        Destroy(card.Get_VisualCard());
     }
 }

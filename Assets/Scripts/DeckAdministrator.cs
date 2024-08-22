@@ -8,7 +8,7 @@ public class DeckAdministrator : MonoBehaviour
     [SerializeField] private List<Card> Deck = new List<Card>();
     [SerializeField] private Hand mainHand;
     [SerializeField] private GameObject Card;
-    [SerializeField] private Hand.HandStruct SelectedCard;
+    [SerializeField] private Hand.HandClass SelectedCard;
     [SerializeField] private PlayCard TopPlaceButton;
     [SerializeField] private PlayCard BottomPlaceButton;
 
@@ -19,7 +19,8 @@ public class DeckAdministrator : MonoBehaviour
         instance = this;
         TurnPlaceCardButtons(false);
     }
-    public void Set_SelectedCard(Hand.HandStruct card)
+    // select a card to play on table
+    public void Set_SelectedCard(Hand.HandClass card)
     {
         UnselectCard();
         SelectedCard = card;
@@ -31,6 +32,7 @@ public class DeckAdministrator : MonoBehaviour
         BottomPlaceButton.Set_card(card);
         Table.instance.TurnTableButtons(true, card);
     }
+    // unselect a card that was presviously selected
     public void UnselectCard()
     {
         if (SelectedCard.Get_VisualCard() != null)
@@ -79,6 +81,7 @@ public class DeckAdministrator : MonoBehaviour
             }
         }
     }
+    //Draw a single car dto the hand
     public void FillHandSingle()
     {
         if (mainHand.Get_CardOnHandNum() < mainHand.Get_HandMaxSize() && Deck.Count > 0)

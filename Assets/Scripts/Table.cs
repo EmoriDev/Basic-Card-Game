@@ -32,18 +32,19 @@ public class Table : MonoBehaviour
     }
     public void SetNewCard(Card card, GameObject visual, int posit)
     {
-        
+        // place card on table
         if (posit >= TableCards.Count) posit = TableCards.Count;
         GameObject TableCardVisual = Instantiate(visual, TablePivot.position + new Vector3(posit / 1.5f, 0, -posit / 100f), Quaternion.identity);
         TableCardStruct TC = new TableCardStruct(card, TableCardVisual); ;
         TC.Get_VisualCard().GetComponent<SpriteRenderer>().color = Color.white;
-
         TableCards.Insert(posit,TC);
-        TableCardVisual.GetComponentInChildren<Button>().enabled = false;
         TableCardVisual.transform.SetParent(TablePivot);
+        TableCardVisual.GetComponent<PlayCard>().Set_Index(posit + 1); // set card position on table
+        // deactivate table placement buttons
+        TableCardVisual.GetComponentInChildren<Button>().enabled = false;
         DeckAdministrator.instance.TurnPlaceCardButtons(false);
-        TableCardVisual.GetComponent<PlayCard>().Set_Index(posit+1);
-        //Alter position of the next cards
+        TurnTableButtons(false, null);
+        //Alter position of the next cards on table
         int i = posit+1;
         while (i < TableCards.Count)
         {
@@ -51,11 +52,11 @@ public class Table : MonoBehaviour
             TableCards[i].Get_VisualCard().GetComponent<PlayCard>().Set_Index(i+1);
             i++;
         }
-        TableCardVisual.GetComponentInChildren<Button>().onClick.AddListener(delegate () { TableCardVisual.GetComponentInChildren<PlayCard>().PlayCardOnTable(); });
-
-        TurnTableButtons(false, null);
+        // change button of the card to be a play card function
+        TableCardVisual.GetComponentInChildren<Button>().onClick.AddListener(delegate () { TableCardVisual.GetComponentInChildren<PlayCard>().PlayCardOnTable(); }); 
     }
-    public void TurnTableButtons(bool value, Hand.HandStruct card)
+    // turn on/off buttons used to place card on table
+    public void TurnTableButtons(bool value, Hand.HandClass card)
     {
         foreach (TableCardStruct tb in TableCards)
         {
