@@ -42,12 +42,21 @@ public class Table : MonoBehaviour
         TableCardVisual.GetComponentInChildren<Button>().enabled = false;
         TableCardVisual.transform.SetParent(TablePivot);
         DeckAdministrator.instance.TurnPlaceCardButtons(false);
+        TableCardVisual.GetComponent<PlayCard>().Set_Index(posit);
         //Alter position of the next cards
         int i = posit+1;
         while (i < TableCards.Count)
         {
             TableCards[i].Get_VisualCard().transform.position += new Vector3(1 / 2f, 0, -1 / 100f);
+            TableCards[i].Get_VisualCard().GetComponent<PlayCard>().Set_Index(i);
             i++;
+        }
+    }
+    public void SetTableCardsButtoms()
+    {
+        foreach(TableCardStruct tb in TableCards)
+        {
+            tb.Get_VisualCard().GetComponentInChildren<Button>().onClick.AddListener(delegate () { tb.Get_VisualCard().GetComponentInChildren<PlayCard>().PlayCardOnTable(); });
         }
     }
 }

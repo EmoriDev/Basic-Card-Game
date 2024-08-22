@@ -10,6 +10,10 @@ public class PlayCard : MonoBehaviour
     {
         Card = hand;
     }
+    public void Set_Index(int i)
+    {
+        index = i;
+    }
     public void SelectCard()
     {
         if (Card.Get_is_selected() == false) DeckAdministrator.instance.Set_SelectedCard(Card);
