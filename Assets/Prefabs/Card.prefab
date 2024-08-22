@@ -426,7 +426,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6000062954092949082}
         m_TargetAssemblyTypeName: PlayCard, Assembly-CSharp
-        m_MethodName: PlayCardOnTable
+        m_MethodName: SelectCard
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

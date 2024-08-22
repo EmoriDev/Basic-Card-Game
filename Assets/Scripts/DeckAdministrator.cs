@@ -2,17 +2,50 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 public class DeckAdministrator : MonoBehaviour
 {
     [SerializeField] private List<Card> Deck = new List<Card>();
     [SerializeField] private Hand mainHand;
     [SerializeField] private GameObject Card;
+    [SerializeField] private Hand.HandStruct SelectedCard;
+    [SerializeField] private PlayCard TopPlaceButton;
+    [SerializeField] private PlayCard BottomPlaceButton;
 
     public static DeckAdministrator instance;
     // Start is called before the first frame update
     void Start()
     {
         instance = this;
+        TurnPlaceCardButtons(false);
+    }
+    public void Set_SelectedCard(Hand.HandStruct card)
+    {
+        UnselectCard();
+        SelectedCard = card;
+        card.Get_VisualCard().transform.position = new Vector3(card.Get_VisualCard().transform.position.x, -2, 0);
+        card.Get_VisualCard().GetComponent<SpriteRenderer>().color = Color.yellow;
+        card.Set_is_selected(true);
+        TurnPlaceCardButtons(true);
+        TopPlaceButton.Set_card(card);
+        BottomPlaceButton.Set_card(card);
+    }
+    public void UnselectCard()
+    {
+        if (SelectedCard.Get_VisualCard() != null)
+        {
+            SelectedCard.Get_VisualCard().transform.position = new Vector3(SelectedCard.Get_VisualCard().transform.position.x, -3, 0);
+            SelectedCard.Get_VisualCard().GetComponent<SpriteRenderer>().color = Color.white;
+            SelectedCard.Set_is_selected(false);
+            TurnPlaceCardButtons(false);
+        }
+    }
+    public void TurnPlaceCardButtons(bool value)
+    {
+        TopPlaceButton.GetComponent<Button>().enabled = value;
+        TopPlaceButton.GetComponent<Image>().enabled = value;
+        BottomPlaceButton.GetComponent<Button>().enabled = value;
+        BottomPlaceButton.GetComponent<Image>().enabled = value;
     }
     public Hand Get_Hand()
     {

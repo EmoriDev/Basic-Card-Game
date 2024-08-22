@@ -4,11 +4,20 @@ using UnityEngine;
 
 public class Hand : MonoBehaviour
 {
-    public struct HandStruct
+    [System.Serializable]
+    public class HandStruct
     {
         [SerializeField] private Card InternalCard;
         [SerializeField] private GameObject VisualCard;
-
+        [SerializeField] private bool is_selected;
+        public bool Get_is_selected()
+        {
+            return is_selected;
+        }
+        public void Set_is_selected(bool value)
+        {
+            is_selected = value;
+        }
         public Card Get_InternalCard()
         {
             return InternalCard;
@@ -17,11 +26,12 @@ public class Hand : MonoBehaviour
         {
             return VisualCard;
         }
-        public HandStruct(Card c, GameObject v)
+        public HandStruct(Card c, GameObject v, bool s)
         {
             InternalCard = c;
             VisualCard = v;
-            VisualCard.GetComponent<PlayCard>().Set_index(this);
+            is_selected = s;
+            VisualCard.GetComponent<PlayCard>().Set_card(this);
         }
     }
     [SerializeField] private List<HandStruct> HandDeck = new List<HandStruct>();
@@ -29,7 +39,7 @@ public class Hand : MonoBehaviour
     
     public void Set_Hand(Card card, GameObject visual)
     {
-        HandDeck.Add(new HandStruct(card, visual));
+        HandDeck.Add(new HandStruct(card, visual,false));
     }
     public int Get_HandMaxSize()
     {
@@ -55,12 +65,14 @@ public class Hand : MonoBehaviour
         {
             i++;
         }
+        HandDeck.RemoveAt(i);
         while (i < HandDeck.Count)
         {
             HandDeck[i].Get_VisualCard().transform.position -= new Vector3(3.75f, 0, 0);
             i++;
         }
-        Destroy(card.Get_VisualCard());
-        HandDeck.Remove(card);
+        GameObject vc = card.Get_VisualCard();
+        Destroy(vc);
+        
     }
 }

@@ -4,14 +4,23 @@ using UnityEngine;
 
 public class PlayCard : MonoBehaviour
 {
-    private Hand.HandStruct Card;
-    public void Set_index(Hand.HandStruct hand)
+    [SerializeField] private Hand.HandStruct Card;
+    [SerializeField] private int index = 0;
+    public void Set_card(Hand.HandStruct hand)
     {
         Card = hand;
     }
+    public void SelectCard()
+    {
+        if (Card.Get_is_selected() == false) DeckAdministrator.instance.Set_SelectedCard(Card);
+        else DeckAdministrator.instance.UnselectCard();
+    }
     public void PlayCardOnTable()
     {
-        Table.instance.SetNewCard(Card.Get_InternalCard(),Card.Get_VisualCard());
-        DeckAdministrator.instance.Get_Hand().RemoveCard(Card);
+        if (Card.Get_VisualCard() != null)
+        {
+            Table.instance.SetNewCard(Card.Get_InternalCard(), Card.Get_VisualCard(), index);
+            DeckAdministrator.instance.Get_Hand().RemoveCard(Card);
+        }
     }
 }

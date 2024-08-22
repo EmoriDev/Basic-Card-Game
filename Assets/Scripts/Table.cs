@@ -5,11 +5,11 @@ using UnityEngine.UI;
 public class Table : MonoBehaviour
 {
     public static Table instance;
+    [System.Serializable]
     public struct TableCardStruct
     {
         [SerializeField] private Card InternalCard;
         [SerializeField] private GameObject VisualCard;
-
         public Card Get_InternalCard()
         {
             return InternalCard;
@@ -30,12 +30,24 @@ public class Table : MonoBehaviour
     {
         instance = this;
     }
-
-    public void SetNewCard(Card card, GameObject visual)
+    public void SetNewCard(Card card, GameObject visual, int posit)
     {
-        GameObject TableCardVisual = Instantiate(visual, TablePivot.position + new Vector3(TableCards.Count/2f, 0, -TableCards.Count/100f), Quaternion.identity);
-        TableCards.Add(new TableCardStruct(card, TableCardVisual));
+        
+        if (posit >= TableCards.Count) posit = TableCards.Count;
+        GameObject TableCardVisual = Instantiate(visual, TablePivot.position + new Vector3(posit / 2f, 0, -posit / 100f), Quaternion.identity);
+        TableCardStruct TC = new TableCardStruct(card, TableCardVisual); ;
+        TC.Get_VisualCard().GetComponent<SpriteRenderer>().color = Color.white;
+
+        TableCards.Insert(posit,TC);
         TableCardVisual.GetComponentInChildren<Button>().enabled = false;
         TableCardVisual.transform.SetParent(TablePivot);
+        DeckAdministrator.instance.TurnPlaceCardButtons(false);
+        //Alter position of the next cards
+        int i = posit+1;
+        while (i < TableCards.Count)
+        {
+            TableCards[i].Get_VisualCard().transform.position += new Vector3(1 / 2f, 0, -1 / 100f);
+            i++;
+        }
     }
 }
