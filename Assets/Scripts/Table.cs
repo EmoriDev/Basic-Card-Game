@@ -34,7 +34,7 @@ public class Table : MonoBehaviour
     {
         
         if (posit >= TableCards.Count) posit = TableCards.Count;
-        GameObject TableCardVisual = Instantiate(visual, TablePivot.position + new Vector3(posit / 2f, 0, -posit / 100f), Quaternion.identity);
+        GameObject TableCardVisual = Instantiate(visual, TablePivot.position + new Vector3(posit / 1.5f, 0, -posit / 100f), Quaternion.identity);
         TableCardStruct TC = new TableCardStruct(card, TableCardVisual); ;
         TC.Get_VisualCard().GetComponent<SpriteRenderer>().color = Color.white;
 
@@ -47,7 +47,7 @@ public class Table : MonoBehaviour
         int i = posit+1;
         while (i < TableCards.Count)
         {
-            TableCards[i].Get_VisualCard().transform.position += new Vector3(1 / 2f, 0, -1 / 100f);
+            TableCards[i].Get_VisualCard().transform.position += new Vector3(1 /1.5f, 0, -1 / 100f);
             TableCards[i].Get_VisualCard().GetComponent<PlayCard>().Set_Index(i+1);
             i++;
         }
