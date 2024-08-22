@@ -26,7 +26,7 @@ public class DeckAdministrator : MonoBehaviour
     //Fill a hand with 5 cards
     public void FillHand(int HandSize)
     {
-        if (Deck.Count > 0)
+        if (Deck.Count > 4)
         {
             if (mainHand.Get_CardOnHandNum() > 0)
             {
