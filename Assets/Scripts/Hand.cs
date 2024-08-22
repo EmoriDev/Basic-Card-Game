@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Hand : MonoBehaviour
 {
-    struct HandStruct
+    public struct HandStruct
     {
         [SerializeField] private Card InternalCard;
         [SerializeField] private GameObject VisualCard;
@@ -17,11 +17,11 @@ public class Hand : MonoBehaviour
         {
             return VisualCard;
         }
-
         public HandStruct(Card c, GameObject v)
         {
             InternalCard = c;
             VisualCard = v;
+            VisualCard.GetComponent<PlayCard>().Set_index(this);
         }
     }
     [SerializeField] private List<HandStruct> HandDeck = new List<HandStruct>();
@@ -47,5 +47,20 @@ public class Hand : MonoBehaviour
             Destroy(card.Get_VisualCard());
         }
         HandDeck.Clear();
+    }
+    public void RemoveCard(HandStruct card)
+    {
+        int i = 0;
+        while (HandDeck[i].Get_VisualCard() != card.Get_VisualCard() && i < HandDeck.Count)
+        {
+            i++;
+        }
+        while (i < HandDeck.Count)
+        {
+            HandDeck[i].Get_VisualCard().transform.position -= new Vector3(3.75f, 0, 0);
+            i++;
+        }
+        Destroy(card.Get_VisualCard());
+        HandDeck.Remove(card);
     }
 }
