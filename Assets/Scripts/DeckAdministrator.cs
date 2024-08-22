@@ -29,6 +29,7 @@ public class DeckAdministrator : MonoBehaviour
         TurnPlaceCardButtons(true);
         TopPlaceButton.Set_card(card);
         BottomPlaceButton.Set_card(card);
+        Table.instance.TurnTableButtons(true, card);
     }
     public void UnselectCard()
     {
@@ -37,8 +38,13 @@ public class DeckAdministrator : MonoBehaviour
             SelectedCard.Get_VisualCard().transform.position = new Vector3(SelectedCard.Get_VisualCard().transform.position.x, -3, 0);
             SelectedCard.Get_VisualCard().GetComponent<SpriteRenderer>().color = Color.white;
             SelectedCard.Set_is_selected(false);
-            TurnPlaceCardButtons(false);
         }
+    }
+    public void DeactivateSelection()
+    {
+        UnselectCard();
+        TurnPlaceCardButtons(false);
+        Table.instance.TurnTableButtons(false, null);
     }
     public void TurnPlaceCardButtons(bool value)
     {
@@ -61,6 +67,7 @@ public class DeckAdministrator : MonoBehaviour
     {
         if (Deck.Count > 4)
         {
+            DeactivateSelection();
             if (mainHand.Get_CardOnHandNum() > 0)
             {
                 mainHand.SendHandBackToDeck();
@@ -76,6 +83,7 @@ public class DeckAdministrator : MonoBehaviour
     {
         if (mainHand.Get_CardOnHandNum() < mainHand.Get_HandMaxSize() && Deck.Count > 0)
         {
+            DeactivateSelection();
             DrawCard(mainHand.Get_CardOnHandNum());
         }
     }

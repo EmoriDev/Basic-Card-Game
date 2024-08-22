@@ -17,7 +17,7 @@ public class PlayCard : MonoBehaviour
     public void SelectCard()
     {
         if (Card.Get_is_selected() == false) DeckAdministrator.instance.Set_SelectedCard(Card);
-        else DeckAdministrator.instance.UnselectCard();
+        else DeckAdministrator.instance.DeactivateSelection();
     }
     public void PlayCardOnTable()
     {

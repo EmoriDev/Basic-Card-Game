@@ -42,21 +42,30 @@ public class Table : MonoBehaviour
         TableCardVisual.GetComponentInChildren<Button>().enabled = false;
         TableCardVisual.transform.SetParent(TablePivot);
         DeckAdministrator.instance.TurnPlaceCardButtons(false);
-        TableCardVisual.GetComponent<PlayCard>().Set_Index(posit);
+        TableCardVisual.GetComponent<PlayCard>().Set_Index(posit+1);
         //Alter position of the next cards
         int i = posit+1;
         while (i < TableCards.Count)
         {
             TableCards[i].Get_VisualCard().transform.position += new Vector3(1 / 2f, 0, -1 / 100f);
-            TableCards[i].Get_VisualCard().GetComponent<PlayCard>().Set_Index(i);
+            TableCards[i].Get_VisualCard().GetComponent<PlayCard>().Set_Index(i+1);
             i++;
         }
+        TableCardVisual.GetComponentInChildren<Button>().onClick.AddListener(delegate () { TableCardVisual.GetComponentInChildren<PlayCard>().PlayCardOnTable(); });
+
+        TurnTableButtons(false, null);
     }
-    public void SetTableCardsButtoms()
+    public void TurnTableButtons(bool value, Hand.HandStruct card)
     {
-        foreach(TableCardStruct tb in TableCards)
+        foreach (TableCardStruct tb in TableCards)
         {
-            tb.Get_VisualCard().GetComponentInChildren<Button>().onClick.AddListener(delegate () { tb.Get_VisualCard().GetComponentInChildren<PlayCard>().PlayCardOnTable(); });
+            tb.Get_VisualCard().GetComponentInChildren<Button>().enabled = value;
+            if (value == true)
+            {
+                tb.Get_VisualCard().GetComponentInChildren<PlayCard>().Set_card(card);
+                tb.Get_VisualCard().GetComponent<SpriteRenderer>().color = Color.yellow;
+            }
+            else tb.Get_VisualCard().GetComponent<SpriteRenderer>().color = Color.white;
         }
     }
 }
