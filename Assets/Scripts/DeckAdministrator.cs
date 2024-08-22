@@ -32,7 +32,7 @@ public class DeckAdministrator : MonoBehaviour
         BottomPlaceButton.Set_card(card);
         Table.instance.TurnTableButtons(true, card);
     }
-    // unselect a card that was presviously selected
+    // unselect a card that was previously selected
     public void UnselectCard()
     {
         if (SelectedCard.Get_VisualCard() != null)
@@ -81,7 +81,7 @@ public class DeckAdministrator : MonoBehaviour
             }
         }
     }
-    //Draw a single car dto the hand
+    //Draw a single card to the hand
     public void FillHandSingle()
     {
         if (mainHand.Get_CardOnHandNum() < mainHand.Get_HandMaxSize() && Deck.Count > 0)
